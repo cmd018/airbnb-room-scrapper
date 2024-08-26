@@ -5,6 +5,7 @@ import hpp from "hpp";
 import compression from "compression";
 import { NODE_ENV, ORIGIN, PORT } from "./config";
 import { Routes } from "./types";
+import errorMiddleware from "./middlewares/error.middleware";
 
 class App {
   public app: express.Application;
@@ -20,6 +21,7 @@ class App {
 
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
+    this.initializeErrorHandling();
   }
 
   public listen() {
@@ -54,6 +56,10 @@ class App {
     routes.forEach(route => {
       this.app.use("/", route.router);
     });
+  }
+
+  private initializeErrorHandling() {
+    this.app.use(errorMiddleware);
   }
 }
 
