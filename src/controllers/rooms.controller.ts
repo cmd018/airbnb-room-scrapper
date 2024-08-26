@@ -7,6 +7,8 @@ class RoomsController {
   public getRoomById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const roomId: number = parseInt(req.params.id);
+      
+      //TODO: move to validation middleware
       if (Number.isNaN(roomId)) {
         throw new HttpException(400, "Invalid room id");
       }

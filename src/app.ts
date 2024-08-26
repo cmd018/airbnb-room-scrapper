@@ -32,6 +32,10 @@ class App {
     });
   }
 
+  public getServer() {
+    return this.app;
+  }
+
   private initializeMiddlewares() {
     // Enable CORS with options
     this.app.use(cors({ origin: ORIGIN, credentials: false }));
