@@ -4,6 +4,7 @@ import helmet from "helmet";
 import hpp from "hpp";
 import compression from "compression";
 import { NODE_ENV, ORIGIN, PORT } from "./config";
+import { Routes } from "./types";
 
 class App {
   public app: express.Application;
@@ -12,12 +13,13 @@ class App {
 
   public port: string | number;
 
-  constructor() {
+  constructor(routes: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || "development";
     this.port = PORT || 3000;
 
     this.initializeMiddlewares();
+    this.initializeRoutes(routes);
   }
 
   public listen() {
@@ -46,6 +48,12 @@ class App {
 
     // parses incoming requests with URL-encoded payloads
     this.app.use(express.urlencoded({ extended: true }));
+  }
+
+  private initializeRoutes(routes: Routes[]) {
+    routes.forEach(route => {
+      this.app.use("/", route.router);
+    });
   }
 }
 
